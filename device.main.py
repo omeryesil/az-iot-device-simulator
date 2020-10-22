@@ -1,19 +1,25 @@
 import random
 import time 
 import json 
-from device_config import DeviceConfig
+from deviceConfig import DeviceConfig
 from azure.iot.device import IoTHubDeviceClient, Message 
 
 conf = DeviceConfig('config.yaml')
 
-
 TEMPERATURE = 20.0
 HUMIDITY = 60 
+
+SensorValues = {
+  "temperature" : 20.0,
+  "humidity" : 60
+}
+
+
+
 MSG_TXT = '{{"temperature": {temperature},"humidity": {humidity}}}'
 
 def iothub_client_init():
   client = IoTHubDeviceClient.create_from_connection_string(conf.ConnectionString)
-  
   return client 
 
 def iothub_client_telemetry_sample_run() :
@@ -22,10 +28,10 @@ def iothub_client_telemetry_sample_run() :
     print ("Sending periodic messages, CTRL+C to exit")
 
     while True:
-      temperature = TEMPERATURE + (random.random() * 15)
-      humidity    = HUMIDITY + (random.random() * 20)
+      SensorValues["temperature"] = TEMPERATURE + (random.random() * 15)
+      SensorValues["humidity"]    = HUMIDITY + (random.random() * 20)
 
-      msg_text_formatted = MSG_TXT.format(temperature = temperature, humidity = humidity)
+      msg_text_formatted = MSG_TXT.format(temperature = SensorValues["temperature"], humidity = SensorValues["humidity"])
       message = Message(msg_text_formatted)
 
       # custom application prop
@@ -33,12 +39,19 @@ def iothub_client_telemetry_sample_run() :
       message.custom_properties["deviceName"] = conf.Name
       message.custom_properties["locationId"] = conf.LocationId
 
-
       # an IoT hub can filter on these properties without accesss to the message body 
-      if temperature > 30:
-        message.custom_properties["temperatureAlert"] = "true"
-      else:
-        message.custom_properties["temperatureAlert"] = "false"
+      for sensor in SensorValues:
+        for alert in conf.Alerts:
+          print(alert.Attribute)
+          if sensor == alert.Attribute:
+            sValue = float(SensorValues[alert.Attribute])
+
+            if alert.Operand.lower() == "greater" and sValue > alert.Value or \
+               alert.Operand.lower() == "equal" and sValue == alert.Value or \
+               alert.Operand.lower() == "smaller" and sValue < alert.Value:
+              message.custom_properties[alert.Name] = "true" 
+            else:
+              message.custom_properties[alert.Name] = "false"
 
       # send the message
       print("Sending: {}".format(message))
