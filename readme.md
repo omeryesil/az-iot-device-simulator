@@ -10,13 +10,13 @@ This is a simple python application that works like an IoT device. The applicati
   "Properties": {
     "deviceGuid": "<GUIDofTheDevice>",
     "deviceName": "<NameOfTheDevice>",
-    "locationId": "temperatureSensonr01"
+    "locationId": "<locationId>"
   },
   "SystemProperties": {
-    "connectionDeviceId": "myTestDevice",
-    "connectionAuthMethod": "{\"scope\":\"device\",\"type\":\"sas\",\"issuer\":\"iothub\",\"acceptingIpFilterRule\":null}",
-    "connectionDeviceGenerationId": "637387648409568620",
-    "enqueuedTime": "2019-10-23T01:42:52.6750000Z"
+    "connectionDeviceId": "<connectionDeviceId>",
+    "connectionAuthMethod": "<connectionAuthMethod>",
+    "connectionDeviceGenerationId": "<connectionDeviceGenerationId>",
+    "enqueuedTime": "<enqueuedTime>"
   },
   "Body": "eyJ0ZW1wZXJhdHVyZSI6IDI3LjkzNzM3NTI3NTU1OTE3NywiaHVtaWRpdHkiOiA3NS4zNDAwMTI0ODQ3NjQ0fQ=="
 }
