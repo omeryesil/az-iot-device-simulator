@@ -4,7 +4,16 @@ import json
 from deviceConfig import DeviceConfig
 from azure.iot.device import IoTHubDeviceClient, Message 
 
+from requests import get
+
 conf = DeviceConfig('config/config.yaml')
+
+# get external ip of the device
+def GetExternalIp():
+  ip = get('https://api.ipify.org').text
+  return ip
+
+ExternalIp = GetExternalIp()
 
 TEMPERATURE = 20.0
 HUMIDITY = 60 
@@ -35,6 +44,7 @@ def sendMessageToCloud() :
       message.custom_properties["deviceGuid"] = conf.GUID
       message.custom_properties["deviceName"] = conf.Name
       message.custom_properties["locationId"] = conf.LocationId
+      message.custom_properties["externalIp"] = ExternalIp
 
       # an IoT hub can filter on these properties without accesss to the message body 
       for sensor in SensorValues:
