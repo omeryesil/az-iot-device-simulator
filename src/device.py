@@ -17,7 +17,7 @@ ExternalIp = GetExternalIp()
 
 TEMPERATURE = 20.0
 HUMIDITY = 60 
-MESSAGE_TEMPLATE = '{{"temperature": {temperature},"humidity": {humidity}}}'
+MSG_TEMPLATE = '{{"temperature": {temperature},"humidity": {humidity}}}'
 
 SensorValues = {
   "temperature" : 20.0,
@@ -37,7 +37,7 @@ def sendMessageToCloud() :
       SensorValues["temperature"] = TEMPERATURE + (random.random() * 15)
       SensorValues["humidity"]    = HUMIDITY + (random.random() * 20)
 
-      msg_text_formatted = MESSAGE_TEMPLATE.format(temperature = SensorValues["temperature"], humidity = SensorValues["humidity"])
+      msg_text_formatted = MSG_TEMPLATE.format(temperature = SensorValues["temperature"], humidity = SensorValues["humidity"])
       message = Message(msg_text_formatted)
 
       # custom application prop
