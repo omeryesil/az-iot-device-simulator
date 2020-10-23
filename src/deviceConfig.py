@@ -13,7 +13,6 @@ class DeviceConfig:
   Sensors = []
   Alerts = []
 
-
   def __init__(self, fileName):
     with open(fileName) as file:
       # The FullLoader parameter handles the conversion from YAML
@@ -27,7 +26,7 @@ class DeviceConfig:
       self.SleepInSeconds   = int(data["device"]["sleepInSeconds"])
 
       for s in data["device"]["sensors"]:
-        self.Alerts.append( Sensor(s["name"], s["ValueType"], s["MinValue"], s["MaxValue"]))
+        self.Sensors.append( Sensor(s["name"], s["valueType"], s["minValue"], s["maxValue"]))
 
       for a in data["device"]["alerts"]:
         self.Alerts.append( Alert(a["name"], a["attribute"], a["value"], a["operand"]))
