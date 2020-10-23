@@ -1,12 +1,14 @@
 
 class Alert:
   Name = ""
-  Attribute = ""
+  SensorName = ""
   Value = -99999
   Operand = "equal"
 
-  def __init__(self, name, attribute, value, operand):
+  def __init__(self, name, sensorName, value, operand):
     self.Name = name
-    self.Attribute = attribute
+    self.SensorName = sensorName
     self.Value = value
     self.Operand = operand
+
+  

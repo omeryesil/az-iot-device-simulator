@@ -48,7 +48,7 @@ def sendMessageToCloud() :
       # an IoT hub can filter on these properties without accesss to the message body 
       for sensor in conf.Sensors:
         for alert in conf.Alerts:
-          if sensor.Name == alert.Attribute:
+          if sensor.Name == alert.SensorName:
             if sensor.ValueType == "bool":
               if alert.Operand.lower() == "equal" and bool(sensor.CurrentValue) == bool(alert.Value):
                 message.custom_properties[alert.Name] = "true"

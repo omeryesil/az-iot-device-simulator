@@ -29,5 +29,5 @@ class DeviceConfig:
         self.Sensors.append( Sensor(s["name"], s["valueType"], s["minValue"], s["maxValue"]))
 
       for a in data["device"]["alerts"]:
-        self.Alerts.append( Alert(a["name"], a["attribute"], a["value"], a["operand"]))
+        self.Alerts.append( Alert(a["name"], a["sensorName"], a["value"], a["operand"]))
 
