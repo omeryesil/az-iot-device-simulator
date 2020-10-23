@@ -15,15 +15,6 @@ def GetExternalIp():
 
 ExternalIp = GetExternalIp()
 
-TEMPERATURE = 20.0
-HUMIDITY = 60 
-MSG_TEMPLATE = '{{"temperature": {temperature},"humidity": {humidity}}}'
-
-SensorValues = {
-  "temperature" : 20.0,
-  "humidity" : 60
-}
-
 def iotHubClientInit():
   client = IoTHubDeviceClient.create_from_connection_string(conf.ConnectionString)
   return client 
@@ -34,11 +25,19 @@ def sendMessageToCloud() :
     print ("Sending periodic messages, CTRL+C to exit")
 
     while True:
-      SensorValues["temperature"] = TEMPERATURE + (random.random() * 15)
-      SensorValues["humidity"]    = HUMIDITY + (random.random() * 20)
+      
+      messageText = '{'
+      for s in conf.Sensors:
+        s.generateValue()
+        if messageText != '{':
+          messageText += ','
+        if s.ValueType == "bool":
+          messageText += ' "' + s.Name + '" : "' + s.CurrentValue + '"'
+        else:
+          messageText += ' "' + s.Name + '" : ' + s.CurrentValue
+      messageText += '}'
 
-      msg_text_formatted = MSG_TEMPLATE.format(temperature = SensorValues["temperature"], humidity = SensorValues["humidity"])
-      message = Message(msg_text_formatted)
+      message = Message(messageText)
 
       # custom application prop
       message.custom_properties["deviceGuid"] = conf.GUID
@@ -47,10 +46,15 @@ def sendMessageToCloud() :
       message.custom_properties["externalIp"] = ExternalIp
 
       # an IoT hub can filter on these properties without accesss to the message body 
-      for sensor in SensorValues:
+      for sensor in conf.Sensors:
         for alert in conf.Alerts:
-          if sensor == alert.Attribute:
-            sValue = float(SensorValues[alert.Attribute])
+          if sensor.Name == alert.SensorName:
+            if sensor.ValueType == "bool":
+              if alert.Operand.lower() == "equal" and bool(sensor.CurrentValue) == bool(alert.Value):
+                message.custom_properties[alert.Name] = "true"
+              continue
+
+            sValue = float(sensor.CurrentValue)
 
             if alert.Operand.lower() == "greater" and sValue > alert.Value or \
                alert.Operand.lower() == "equal" and sValue == alert.Value or \

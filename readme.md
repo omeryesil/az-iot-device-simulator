@@ -46,12 +46,12 @@ device:
   # List of alerts. 
   # For example, add an alert to the message if temperature is greater than 35 
   alerts:   
-    - attribute: temperature  # name of the attribure. temeperature or humidity
+    - sensorName: temperature  # name of the attribure. temeperature or humidity
       name: HighTemperature   # alert name. This will be added to the message sent to IoT hub
       value: 35               # threshold value
       operand : greater       # greater, smaller or equal. Used to compare actual value with threshold value
 
-    - attribute: temperature
+    - sensorName: temperature
       name: LowTemperature
       value: -15
       operand: smaller 

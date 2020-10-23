@@ -1,16 +1,7 @@
 import yaml
+from deviceAlert import Alert 
+from deviceSensor import Sensor 
 
-class Alert:
-  Name = ""
-  Attribute = ""
-  Value = -99999
-  Operand = "equal"
-
-  def __init__(self, name, attribute, value, operand):
-    self.Name = name
-    self.Attribute = attribute
-    self.Value = value
-    self.Operand = operand
 
 class DeviceConfig:
   GUID = ""
@@ -18,6 +9,8 @@ class DeviceConfig:
   ConnectionString = ""
   LocationId = ""
   SleepInSeconds = 10  
+  
+  Sensors = []
   Alerts = []
 
   def __init__(self, fileName):
@@ -32,6 +25,9 @@ class DeviceConfig:
       self.LocationId       = data["device"]["locationId"]
       self.SleepInSeconds   = int(data["device"]["sleepInSeconds"])
 
+      for s in data["device"]["sensors"]:
+        self.Sensors.append( Sensor(s["name"], s["valueType"], s["minValue"], s["maxValue"]))
+
       for a in data["device"]["alerts"]:
-        self.Alerts.append( Alert(a["name"], a["attribute"], a["value"], a["operand"]))
+        self.Alerts.append( Alert(a["name"], a["sensorName"], a["value"], a["operand"]))
 
