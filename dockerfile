@@ -1,10 +1,8 @@
 FROM python:3.7.9-alpine3.12
 
 WORKDIR /app 
-COPY . . 
+COPY src/. /app/
 
+RUN pip install -r requirements.txt
 
-RUN pip install -r requirement.txt
-
-
-
+ENTRYPOINT ["python", "device.main.py"]

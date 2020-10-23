@@ -12,12 +12,12 @@ class Alert:
     self.Value = value
     self.Operand = operand
 
-
 class DeviceConfig:
   GUID = ""
   Name = ""
   ConnectionString = ""
   LocationId = ""
+  SleepInSeconds = 10  
   Alerts = []
 
   def __init__(self, fileName):
@@ -30,6 +30,7 @@ class DeviceConfig:
       self.Name             = data["device"]["name"]
       self.ConnectionString = data["device"]["connectionString"]
       self.LocationId       = data["device"]["locationId"]
+      self.SleepInSeconds   = int(data["device"]["sleepInSeconds"])
 
       for a in data["device"]["alerts"]:
         self.Alerts.append( Alert(a["name"], a["attribute"], a["value"], a["operand"]))
