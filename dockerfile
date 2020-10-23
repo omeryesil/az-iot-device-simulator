@@ -5,4 +5,4 @@ COPY src/. /app/
 
 RUN pip install -r requirements.txt
 
-ENTRYPOINT ["python", "device.main.py"]
+ENTRYPOINT ["python", "device.py"]
