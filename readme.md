@@ -99,7 +99,7 @@ device:
 In the following sample call, in the host computer, the config.yaml file is located under /appconfigs/az-iot-device-simulator folder
 
 ```shell
-docker run -it -v ~/appconfigs/az-iot-device-simulator:/app/config oyesil/az-iot-device-simulator:0.2 
+docker run -it -v ~/appconfigs/az-iot-device-simulator:/app/config oyesil/az-iot-device-simulator:0.3
 ```
 
 
