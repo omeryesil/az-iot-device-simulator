@@ -48,7 +48,7 @@ device:
   sleepInSeconds: 20  # Send telemetry data every sleepInSeconds
 
   sensors:
-    - name: temperature   # name of the sesor
+    - name: temperature   # name of the sensor
       valueType: float    # can be: float, int or bool
       minValue: -40
       maxValue: 100
