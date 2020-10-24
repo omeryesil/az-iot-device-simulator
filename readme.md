@@ -35,40 +35,37 @@ This is a simple python application that sends configured sensor data to Azure I
 
 ## Configuration
 
-Application requires config/config.yaml file that should have the following attributes:
+Application requires config/config.yaml. Sample config.yaml:
 
 ```yaml
 device:
-  guid: <GUIDofTheDevice>
-  name: <NameOfTheDevice>  # Can be different than the Azure IoT Device
-  connectionString: <ConnectionString> # Azure IoT Hub Device Connection string
-  locationId: <LocationId>  # You might want to know where your device is located
-  sleepInSeconds: 20  # Message is sent to IoT Hub every sleepInSeconds
+  guid: 515f1ebe-7b8c-4815-bda6-b69ac23a1770
+  name: sensorComboDevice001
+  connectionString: "<AzureIoTHubDeviceConnectionString>"
+  locationId: "<You might want to know where the device is located>"  
+  sleepInSeconds: 20  # Send telemetry data every sleepInSeconds
 
   sensors:
-    - name: <SensorName1> # ex: temperature
-      valueType: float    # float, int or bool
+    - name: temperature   # name of the sesor
+      valueType: float    # can be: float, int or bool
       minValue: -40
       maxValue: 100
 
-    - name: <SensorName2> # ex: motion
-      valueType : bool    # float, int or bool
-      minValue : 0        # any value if valueType is bool
-      maxValue : 0        # any value if valueType is bool
+    - name: motion
+      valueType : bool
+      minValue : 0
+      maxValue : 0 
 
+  alerts:  
+    - name: HighTemperature   # alert name. This will be added as a custom parameter to the telemetry message
+      sensorName: temperature      
+      value: 30
+      operand : greater       # can be: greater, smaller, or equal
 
-  # List of alerts. 
-  # For example, add an alert to the message if temperature is greater than 35 
-  alerts:   
-    - sensorName: temperature  # name of the attribure. temeperature or humidity
-      name: HighTemperature   # alert name. This will be added to the message sent to IoT hub
-      value: 35               # threshold value
-      operand : greater       # greater, smaller or equal. Used to compare actual value with threshold value
-
-    - sensorName: temperature
-      name: LowTemperature
-      value: -15
-      operand: smaller 
+    - name: MotionDetected    # raise if motion sensor is true
+      sensorName: motion
+      value: 1                # if sensors's valueType is bool: 0 is false, 1 is true
+      operand: equal
 
 ```
 
