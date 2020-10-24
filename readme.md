@@ -35,8 +35,10 @@ This is a simple python application that sends configured sensor data to Azure I
 
 ## Configuration
 
-Application requires config/config.yaml. Sample config.yaml:
+Application requires config/config.yaml. Sample:
 
+
+**config.yaml**
 ```yaml
 device:
   guid: 515f1ebe-7b8c-4815-bda6-b69ac23a1770
