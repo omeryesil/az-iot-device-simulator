@@ -37,11 +37,23 @@ Application requires config/config.yaml file that should have the following attr
 
 ```yaml
 device:
-  guid: "<GUIDofTheDevice>"
-  name: "<NameOfTheDevice>"  # Can be different than the Azure IoT Device
-  connectionString: "<ConnectionString>" # Azure IoT Hub Device Connection string
-  locationId: "<LocationId>"  # You might want to know where your device is located
+  guid: <GUIDofTheDevice>
+  name: <NameOfTheDevice>  # Can be different than the Azure IoT Device
+  connectionString: <ConnectionString> # Azure IoT Hub Device Connection string
+  locationId: <LocationId>  # You might want to know where your device is located
   sleepInSeconds: 20  # Message is sent to IoT Hub every sleepInSeconds
+
+  sensors:
+    - name: <SensorName1> # ex: temperature
+      valueType: float    # float, int or bool
+      minValue: -40
+      maxValue: 100
+
+    - name: <SensorName2> # ex: motion
+      valueType : bool    # float, int or bool
+      minValue : 0        # any value if valueType is bool
+      maxValue : 0        # any value if valueType is bool
+
 
   # List of alerts. 
   # For example, add an alert to the message if temperature is greater than 35 
