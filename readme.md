@@ -1,6 +1,7 @@
-#  Azure IoT Device/Thing Simulator 
+  #  Azure IoT Device/Thing Simulator 
 
-This is a simple python application that works like an IoT device. The application sends random humidity and temperature values to Azure IoT Hub.
+This is a simple python application that sends configured sensor data to Azure IoT hub. Sensors can be configured through a configuration file (see the Configuration section)
+
 
 ## Sample Telemetry Message Sent to IoT Hub
 
@@ -24,9 +25,10 @@ This is a simple python application that works like an IoT device. The applicati
 
 - Body attribute is Base64 encoded. Sample decoded value: 
   ```json
-  {
-    "temperature": 27.937375275559177,
-    "humidity": 75.3400124847644
+  { 
+    "temperature" : 55.06736631118647, 
+    "humidity" : 83, 
+    "motion" : "True"
   }
   ```
 
