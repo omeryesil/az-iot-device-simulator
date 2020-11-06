@@ -102,4 +102,3 @@ In the following sample call, in the host computer, the config.yaml file is loca
 ```shell
 docker run -it -v ~/appconfigs/az-iot-device-simulator:/app/config oyesil/az-iot-device-simulator:0.4
 ```
-
