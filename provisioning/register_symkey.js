@@ -6,6 +6,7 @@
 var iotHubTransport = require('azure-iot-device-mqtt').Mqtt;
 var Client = require('azure-iot-device').Client;
 var Message = require('azure-iot-device').Message;
+var CryptoUtils = require('./cryptoUtils.js');
 
 // var ProvisioningTransport = require('azure-iot-provisioning-device-http').Http;
 // var ProvisioningTransport = require('azure-iot-provisioning-device-amqp').Amqp;
@@ -31,14 +32,15 @@ var idScope = process.env.PROVISIONING_IDSCOPE;
 // The registration id of the device to be registered.
 //
 var registrationId = process.env.PROVISIONING_REGISTRATION_ID;
+var symmetricKey = CryptoUtils.createSignature(process.env.PROVISIONING_SYMMETRIC_KEY, registrationId);
 
-var symmetricKey = process.env.PROVISIONING_SYMMETRIC_KEY;
 
 var provisioningSecurityClient = new SymmetricKeySecurityClient(registrationId, symmetricKey);
-
 var provisioningClient = ProvisioningDeviceClient.create(provisioningHost, idScope, new ProvisioningTransport(), provisioningSecurityClient);
+
 // Register the device.
 provisioningClient.setProvisioningPayload({a: 'b'});
+
 provisioningClient.register(function(err, result) {
   if (err) {
     console.log("error registering device: " + err);
