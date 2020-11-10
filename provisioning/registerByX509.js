@@ -39,6 +39,7 @@ module.exports = {
         console.log('assigned hub=' + result.assignedHub);
         console.log('deviceId=' + result.deviceId);
         var connectionString = 'HostName=' + result.assignedHub + ';DeviceId=' + result.deviceId + ';x509=true';
+        
         var hubClient = Client.fromConnectionString(connectionString, iotHubTransport);
         hubClient.setOptions(deviceCert);
         hubClient.open(function (err) {
