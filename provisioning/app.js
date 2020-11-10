@@ -9,6 +9,7 @@
 // node server.js --authtype=smykey --host=global.azure-devices-provisioning.net --idscope=123 --registrationid=abc1234 --enrolmentType=group --symmetrickey=2342342sdfd
 
 var args = require('yargs/yargs')(process.argv.slice(2)).argv;
+var registerDevice = require('./registerDevice.js');
 
 const DEFAULT_HOST = 'global.azure-devices-provisioning.net'
 
@@ -18,27 +19,34 @@ if (args.authtype == undefined) {
 
 var dpsHost = args.host;
 if (args.host == undefined) {
-  host= DEFAULT_HOST ;
+  dpsHost = DEFAULT_HOST;
 }
 
-switch(args.authtype.toLowerCase()) {
-  case 'x509' :
-    console.log("Auth type is x509");
-    var provByX509 = require('./registerByX509.js');
+result = new Object();
 
-    provByX509.registerByX509(dpsHost, idScope, registrationId, enrolmentType, args.certfile, args.certkey);
-    break;
+async function app() {
+  switch (args.authtype.toLowerCase()) {
+    case 'x509':
+      console.log("Auth type is x509");
+      result = await registerDevice.registerByX509(dpsHost, idScope, registrationId, enrolmentType, args.certfile, args.certkey);
+      break;
 
-  case 'symkey':
-    console.log("Auth type is symmetric key");
+    case 'symkey':
+      console.log("Auth type is symmetric key");
 
-    var provBySymKey = require('./registerDevice.js');
-    provBySymKey.registerBySymKey(dpsHost, args.idscope, args.registrationid, args.enrolmenttype, args.symmetrickey);
-    break;
+      result = await registerDevice.registerBySymKey(dpsHost, args.idscope, args.registrationid, args.enrolmenttype, args.symmetrickey);
+      break;
 
-  default:
-    throwError('--authtype is not recognized, it must be x509 or symkey)'); 
+    default:
+      throwError('--authtype is not recognized, it must be x509 or symkey)');
+  }
+
+  console.log(result);
+
 }
+
+app();
+
 
 
 function throwError(msg) {
