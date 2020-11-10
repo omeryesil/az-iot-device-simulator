@@ -39,19 +39,6 @@ var createRegistrationResult = function () {
   return result;
 }
 
-async function operation() {
-  return new Promise(function (resolve, reject) {
-    var a = 0;
-    var b = 1;
-    a = a + b;
-    a = 5;
-
-    // may be a heavy db call or http request?
-    resolve(a) // successfully fill promise
-  })
-}
-
-
 module.exports = {
   // Register by SymmetricKey
   registerBySymKey: async function (dpsHost, idScope, registrationId, enrolmentType, symmetricKey) {
